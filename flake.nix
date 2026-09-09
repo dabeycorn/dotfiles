@@ -25,7 +25,7 @@
 							inherit inputs outputs;
 						};
 						modules = [
-							"./hosts/optimus/configuration.nix"
+							./hosts/optimus/configuration.nix
 						];
 					};
 
