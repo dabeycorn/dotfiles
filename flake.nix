@@ -1,5 +1,5 @@
 {
-	description = "dabeycorn's nixos dotfiles";
+	description = "Hiru's system configuration";
 	inputs = {};
 	outputs = {};
 }
