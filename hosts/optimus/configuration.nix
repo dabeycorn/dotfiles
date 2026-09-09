@@ -58,6 +58,24 @@
     pulse.enable = true;
   };
 
+  # ~ GPU
+  hardware.graphics.enable = true;
+  services.xserver.videoDrivers = [ "modesetting" "nvidia" ];
+  hardware.nvidia.open = false;
+
+  hardware.nvidia = {
+  	open = false;
+	prime = {
+		offload = {
+			enable = true;
+			enableOffloadCmd = true;
+		};
+
+		intelBusId = "PCI:0:2:0";
+		nvidiaBusId = "PCI:2@0:0:0";
+	};
+  };
+
   # ~ USER
   users.users."lahiru" = {
     isNormalUser = true;
@@ -69,17 +87,21 @@
     ];
   };
 
-  # ~ PACKAGES
+  # ~ NIX
+  nix.settings.experimental-features = [ "nix-command" "flakes"];
+
   nixpkgs.config.allowUnfree = true;
 
   programs.firefox.enable = true;
 
   environment.systemPackages = with pkgs; [
     neovim
-    keepassxc
+    home-manager
+    keepassxc # move?
     wget
     git
     gh
+    docker
   ];
 
   # This option defines the first version of NixOS you have installed on this particular machine,
