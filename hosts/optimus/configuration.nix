@@ -9,6 +9,9 @@
   # ~ BOOT
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.kernalModules = [
+  	"kvm-intel"
+  ];
 
   # ~ NETWORKING
   networking.networkmanager.enable = true;
@@ -77,6 +80,12 @@
 	};
   };
 
+  # ~ VIRTUALIZATION
+  # fuck windows
+  virtualisation.docker = {
+	enable = true;
+  };
+
   # ~ USER
   users.users."lahiru" = {
     isNormalUser = true;
@@ -89,34 +98,37 @@
   };
 
   # ~ NIX
-  nix.settings.experimental-features = [ "nix-command" "flakes"];
+  nix.settings = {
+  	experimental-features = [ "nix-command" "flakes"];
+	substituters = [ "https://winapps.cachix.org/" ];
+	trusted-public-keys = [ "winapps.cachix.org-1:HI82jWrXZsQRar/PChgIx1unmuEsiQMQq+zt05CD36g=" ];
+	trusted-users = [ "lahiru" ];
+  };
 
   nixpkgs.config.allowUnfree = true;
 
   programs.firefox.enable = true;
 
   environment.systemPackages = 
-  let
-	winapps =
-		(import (builtins.fetchTarball "https://github.com/winapps-org/winapps/archive/main.tar.gz"))
-		.packages."${pkgs.system}";
-  in
-  [
-    pkgs.neovim
-    pkgs.home-manager
-    pkgs.keepassxc # move?
-    pkgs.wget
-    pkgs.git
-    pkgs.gh
-    winapps.winapps
-    winapps.winapps-launcher
-  ];
-
-  # ~ VIRTUALIZATION
-  # fuck windows
-  virtualisation.docker = {
-  	enable = true;
-  };
+	  let
+		winapps =
+			(import (builtins.fetchTarball {
+				url = "https://github.com/winapps-org/winapps/archive/main.tar.gz";
+				sha256 = "sha256:1jwd9i93gmn4gv76w80k9minw34j2nivi7fk3kzzf8585a6zxh82";
+			}))
+			.packages.${pkgs.system};
+	  in
+	  [
+	    pkgs.neovim
+	    pkgs.home-manager
+	    pkgs.keepassxc # move?
+	    pkgs.wget
+	    pkgs.git
+	    pkgs.gh
+	    pkgs.discord
+	    winapps.winapps
+	    winapps.winapps-launcher
+	  ];
 
 
   # This option defines the first version of NixOS you have installed on this particular machine,
