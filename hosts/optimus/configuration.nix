@@ -66,9 +66,11 @@
   	open = false;
 	prime = {
 		offload = {
-			enable = true;
-			enableOffloadCmd = true;
+			enable = false;
+			enableOffloadCmd = false;
 		};
+
+		sync.enable = true;
 
 		intelBusId = "PCI:0:2:0";
 		nvidiaBusId = "PCI:2@0:0:0";
@@ -79,7 +81,7 @@
   users.users."lahiru" = {
     isNormalUser = true;
     description = "Dasun Abeykoon";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "docker"];
     packages = with pkgs; [
       kdePackages.kate
     #  thunderbird
@@ -93,15 +95,29 @@
 
   programs.firefox.enable = true;
 
-  environment.systemPackages = with pkgs; [
-    neovim
-    home-manager
-    keepassxc # move?
-    wget
-    git
-    gh
-    docker
+  environment.systemPackages = 
+  let
+	winapps =
+		(import (builtins.fetchTarball "https://github.com/winapps-org/winapps/archive/main.tar.gz"))
+		.packages."${pkgs.system}";
+  in
+  [
+    pkgs.neovim
+    pkgs.home-manager
+    pkgs.keepassxc # move?
+    pkgs.wget
+    pkgs.git
+    pkgs.gh
+    winapps.winapps
+    winapps.winapps-launcher
   ];
+
+  # ~ VIRTUALIZATION
+  # fuck windows
+  virtualisation.docker = {
+  	enable = true;
+  };
+
 
   # This option defines the first version of NixOS you have installed on this particular machine,
   # and is used to maintain compatibility with application data (e.g. databases) created on older NixOS versions.
