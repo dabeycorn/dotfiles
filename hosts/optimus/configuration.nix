@@ -9,9 +9,6 @@
   # ~ BOOT
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.kernalModules = [
-  	"kvm-intel"
-  ];
 
   # ~ NETWORKING
   networking.networkmanager.enable = true;
@@ -69,11 +66,12 @@
   	open = false;
 	prime = {
 		offload = {
-			enable = false;
-			enableOffloadCmd = false;
+			enable = true;
+			enableOffloadCmd = true;
 		};
 
-		sync.enable = true;
+		# ignore
+		sync.enable = false;
 
 		intelBusId = "PCI:0:2:0";
 		nvidiaBusId = "PCI:2@0:0:0";
@@ -84,6 +82,11 @@
   # fuck windows
   virtualisation.docker = {
 	enable = true;
+	enableOnBoot = true;
+
+	daemon.settings = {
+		features.cdi = true;
+	};
   };
 
   # ~ USER
@@ -108,6 +111,9 @@
   nixpkgs.config.allowUnfree = true;
 
   programs.firefox.enable = true;
+  programs.steam = {
+  enable = true;
+};
 
   environment.systemPackages = 
 	  let
