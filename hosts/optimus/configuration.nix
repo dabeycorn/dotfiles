@@ -44,6 +44,7 @@
     layout = "us";
     variant = "";
   };
+  services.xserver.dpi = 192;
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
@@ -63,23 +64,26 @@
   services.xserver.videoDrivers = [ "modesetting" "nvidia" ];
 
   hardware.nvidia = {
-  	open = false;
+  	modesetting.enable = true;
+	nvidiaSettings = true;
+  	open = true;
+	# package = config.boot.kernelPackages.nvidiaPackages.stable;
+
 	prime = {
 		offload = {
 			enable = true;
 			enableOffloadCmd = true;
 		};
 
-		# ignore
-		sync.enable = false;
-
-		intelBusId = "PCI:0:2:0";
+		intelBusId = "PCI:0@0:2:0";
 		nvidiaBusId = "PCI:2@0:0:0";
 	};
   };
 
   # ~ VIRTUALIZATION
   # fuck windows
+  virtualisation.libvirtd.enable = true;
+
   virtualisation.docker = {
 	enable = true;
 	enableOnBoot = true;
@@ -93,7 +97,7 @@
   users.users."lahiru" = {
     isNormalUser = true;
     description = "Dasun Abeykoon";
-    extraGroups = [ "networkmanager" "wheel" "docker"];
+    extraGroups = [ "networkmanager" "wheel" "docker" "dialout" "kvm"];
     packages = with pkgs; [
       kdePackages.kate
     #  thunderbird
@@ -132,6 +136,26 @@
 	    pkgs.git
 	    pkgs.gh
 	    pkgs.discord
+	    pkgs.r2modman
+	    pkgs.clock-rs
+	    pkgs.archipelago
+	    pkgs.wineWow64Packages.stable
+	    pkgs.wine
+	    pkgs.vscode
+	    pkgs.slack
+	    (pkgs.wine.override { wineBuild = "wine64"; })
+	    pkgs.wine64
+	    pkgs.wineWow64Packages.staging
+	    pkgs.winetricks
+	    pkgs.wineWow64Packages.waylandFull
+	    pkgs.obsidian
+	    pkgs.kicad
+	    pkgs.arduino-ide
+	    pkgs.arduino-cli
+	    pkgs.libclang
+	    pkgs.cmake
+	    pkgs.pico-sdk
+	    pkgs.ninja
 	    winapps.winapps
 	    winapps.winapps-launcher
 	  ];
