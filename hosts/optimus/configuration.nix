@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{config, pkgs, ... }:
 
 {
   imports =
@@ -156,6 +156,9 @@
 	    pkgs.cmake
 	    pkgs.pico-sdk
 	    pkgs.ninja
+	    pkgs.prismlauncher
+	    pkgs.mediawriter
+	    pkgs.llama-cpp
 	    winapps.winapps
 	    winapps.winapps-launcher
 	  ];
