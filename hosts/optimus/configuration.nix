@@ -161,6 +161,7 @@
 	    pkgs.llama-cpp
 	    pkgs.hyperspeedcube
 	    pkgs.typst
+	    pkgs.tinymist
 	    winapps.winapps
 	    winapps.winapps-launcher
 	  ];
