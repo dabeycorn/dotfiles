@@ -159,6 +159,8 @@
 	    pkgs.prismlauncher
 	    pkgs.mediawriter
 	    pkgs.llama-cpp
+	    pkgs.hyperspeedcube
+	    pkgs.typst
 	    winapps.winapps
 	    winapps.winapps-launcher
 	  ];
